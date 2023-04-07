@@ -66,13 +66,10 @@ ORDER BY raisetime;
 
 ```
 SELECT CONCAT(p.first_name, ' ', p.middle_name, ' ', p.last_name)
-FROM people AS p 
-JOIN 
-(SELECT p_id, count(c_id)
-FROM children
-GROUP BY p_id) AS c ON p.id = c.p_id
-WHERE c.count > 1
-GROUP BY p.first_name, p.middle_name, p.last_name;
+FROM children AS c 
+JOIN people AS p ON p.id = c.p_id
+GROUP BY p.id
+HAVING count(c.c_id) > 1;
 ```
 
 2. Запрос:
