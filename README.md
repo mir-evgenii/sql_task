@@ -41,8 +41,13 @@ FROM (
              LAG(field1) OVER (PARTITION BY name ORDER BY raisetime) prev_field1,
              LAG(field2) OVER (PARTITION BY name ORDER BY raisetime) prev_field2
       FROM logs
-     )
-WHERE prev_field1 != field1 OR prev_field2 != field2 OR prev_field1 IS NULL OR prev_field2 IS NULL
+     ) subquery
+GROUP BY name, raisetime, field1, field2, prev_field1, prev_field2
+HAVING 
+prev_field1 != field1 OR 
+prev_field2 != field2 OR 
+prev_field1 IS NULL OR 
+prev_field2 IS NULL
 ORDER BY raisetime;
 ```
 
